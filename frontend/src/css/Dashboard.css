@@ -1,0 +1,55 @@
+/* Dashboard container */
+.dashboard-container {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+/* Full-page Dashboard content */
+.dashboard-content {
+    background: #2b2437;
+    padding: 4rem 2rem; /* Generous padding for spacing */
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    box-shadow: none; /* No shadow for a seamless look */
+    border-radius: 0; /* No border radius for a full-page feel */
+}
+
+/* Dashboard heading */
+.dashboard-content h1 {
+    color: #fff;
+    margin-bottom: 2rem;
+    font-size: 2.5rem; /* Larger font for prominence */
+}
+
+/* Dashboard paragraph */
+.dashboard-content p {
+    color: #ff9eb0;
+    font-size: 1.2rem;
+    margin-bottom: 2rem; /* More spacing */
+}
+
+/* Dashboard buttons */
+.dashboard-content button {
+    padding: 1rem 2rem; /* Comfortable padding for readability */
+    border-radius: 16px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff6f91, #ff9671);
+    color: #fff;
+    transition: background 0.3s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-content button:hover {
+    background: linear-gradient(135deg, #ff9671, #ff6f91);
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(255,150,113,0.7);
+}
