@@ -5,10 +5,9 @@ WORKDIR /app
 # Copy Maven descriptor
 COPY pom.xml .
 
-# Copy your folders exactly as they are
+# Copy the actual folders from your backend structure
 COPY main ./main
 COPY test ./test
-COPY resources ./resources
 
 # Build the app
 RUN mvn clean package -DskipTests
