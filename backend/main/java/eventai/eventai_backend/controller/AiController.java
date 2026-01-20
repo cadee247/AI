@@ -17,6 +17,7 @@ public class AiController {
     // Session-based conversational memory
     private final Map<String, List<EventDto>> lastEventsBySession = new HashMap<>();
     private final Map<String, String> lastCategoryBySession = new HashMap<>();
+    private final Map<String, EventDto> lastDetailedEventBySession = new HashMap<>();
 
     public AiController() {
         demoEvents = new ArrayList<>();
@@ -293,6 +294,44 @@ public class AiController {
             return ResponseEntity.ok(response);
         }
 
+        // Recall previous query
+        if (isRecall(message)) {
+            String lastCategory = lastCategoryBySession.getOrDefault(sessionId, "");
+            List<EventDto> lastEvents = lastEventsBySession.get(sessionId);
+            if (lastCategory.isEmpty() || lastEvents == null || lastEvents.isEmpty()) {
+                response.put("reply", "I don't have any previous queries from you yet. Let's start fresh—what events interest you? 😊");
+                return ResponseEntity.ok(response);
+            }
+            response.put("reply", "Previously, you asked about " + lastCategory + " events. Here's a quick recap:");
+            List<Map<String, String>> messages = new ArrayList<>();
+            for (int i = 0; i < lastEvents.size(); i++) {
+                EventDto e = lastEvents.get(i);
+                messages.add(Map.of(
+                        "sender", "ai",
+                        "text",
+                        (i + 1) + ". 🎉 " + e.getTitle() +
+                                "\n📅 " + e.getDate() +
+                                "\n💬 Say 'more about " + (i + 1) + "' for details!"
+                ));
+            }
+            response.put("type", "events");
+            response.put("messages", messages);
+            return ResponseEntity.ok(response);
+        }
+
+        // Booking intent
+        if (isBooking(message)) {
+            EventDto lastDetailed = lastDetailedEventBySession.get(sessionId);
+            if (lastDetailed == null) {
+                response.put("reply", "Which event would you like to book? Tell me more details first! 😊");
+                return ResponseEntity.ok(response);
+            }
+            response.put("reply",
+                    "To book for " + lastDetailed.getTitle() + ", visit the website: " + extractWebsite(lastDetailed.getDescription()) +
+                            " or contact: " + extractContact(lastDetailed.getDescription()) + ". Let me know if you need more help! 🎟️");
+            return ResponseEntity.ok(response);
+        }
+
         // Follow-up intent (details)
         if (isFollowUp(message)) {
             List<EventDto> lastEvents = lastEventsBySession.get(sessionId);
@@ -301,9 +340,9 @@ public class AiController {
                         "First, let's find some events! What category interests you? 😊");
                 return ResponseEntity.ok(response);
             }
-            // Check if specifying a particular event (simple number or title match, now with fuzzy)
-            EventDto specificEvent = detectSpecificEvent(message, lastEvents);
-            List<EventDto> eventsToDetail = specificEvent != null ? List.of(specificEvent) : lastEvents;
+            // Check if specifying particular events (now supports multiple)
+            List<EventDto> specificEvents = detectSpecificEvents(message, lastEvents);
+            List<EventDto> eventsToDetail = !specificEvents.isEmpty() ? specificEvents : lastEvents;
 
             List<Map<String, String>> details = eventsToDetail.stream()
                     .map(e -> Map.of(
@@ -316,19 +355,23 @@ public class AiController {
                                     "\n\nWhat do you think? Want more events or details?"
                     ))
                     .toList();
+            // Update last detailed if single
+            if (eventsToDetail.size() == 1) {
+                lastDetailedEventBySession.put(sessionId, eventsToDetail.get(0));
+            }
             response.put("type", "events");
             response.put("messages", details);
             return ResponseEntity.ok(response);
         }
 
-        // Detect time filter
+        // Detect time filter (now with fuzzy)
         Predicate<EventDto> timeFilter = detectTimeFilter(message, now);
 
-        // Category detection (now with fuzzy matching)
-        String category = detectCategory(message);
+        // Category detection (now supports multiple categories)
+        List<String> categories = detectCategories(message);
 
         // If no category but asking for events generally
-        boolean isGeneralEventsQuery = category == null && (message.contains("events") || message.contains("what's on") || message.contains("upcoming"));
+        boolean isGeneralEventsQuery = categories.isEmpty() && (fuzzyContains(message, "events") || fuzzyContains(message, "what's on") || fuzzyContains(message, "upcoming"));
 
         List<EventDto> filtered;
         if (isGeneralEventsQuery) {
@@ -338,14 +381,14 @@ public class AiController {
                     .sorted(Comparator.comparing(EventDto::getDate))
                     .collect(Collectors.toList());
             lastCategoryBySession.put(sessionId, "all");
-        } else if (category != null) {
+        } else if (!categories.isEmpty()) {
             filtered = demoEvents.stream()
-                    .filter(e -> e.getCategory().equalsIgnoreCase(category))
+                    .filter(e -> categories.contains(e.getCategory().toLowerCase()))
                     .filter(timeFilter)
                     .filter(e -> e.getDate().isAfter(now)) // Always filter upcoming
                     .sorted(Comparator.comparing(EventDto::getDate))
                     .collect(Collectors.toList());
-            lastCategoryBySession.put(sessionId, category);
+            lastCategoryBySession.put(sessionId, String.join(" and ", categories));
         } else {
             // Smart fallback with typo suggestion hint
             response.put("reply",
@@ -356,7 +399,7 @@ public class AiController {
         lastEventsBySession.put(sessionId, filtered);
 
         if (filtered.isEmpty()) {
-            String catText = category != null ? category : "matching";
+            String catText = !categories.isEmpty() ? String.join(", ", categories) : "matching";
             response.put("reply",
                     "Sorry, no upcoming " + catText + " events found right now. Check back soon or try another category! 😊");
             return ResponseEntity.ok(response);
@@ -380,13 +423,13 @@ public class AiController {
     }
 
     private boolean isFollowUp(String message) {
-        return message.contains("more")
-                || message.contains("details")
-                || message.contains("tell me")
-                || message.contains("about")
-                || message.contains("when")
-                || message.contains("how much")
-                || message.contains("where");
+        return fuzzyContains(message, "more")
+                || fuzzyContains(message, "details")
+                || fuzzyContains(message, "tell me")
+                || fuzzyContains(message, "about")
+                || fuzzyContains(message, "when")
+                || fuzzyContains(message, "how much")
+                || fuzzyContains(message, "where");
     }
 
     private boolean isAcknowledgement(String message) {
@@ -401,7 +444,21 @@ public class AiController {
                 || message.equals("thank you");
     }
 
-    private String detectCategory(String message) {
+    private boolean isBooking(String message) {
+        return fuzzyContains(message, "book")
+                || fuzzyContains(message, "register")
+                || fuzzyContains(message, "sign up")
+                || fuzzyContains(message, "tickets");
+    }
+
+    private boolean isRecall(String message) {
+        return fuzzyContains(message, "previous")
+                || fuzzyContains(message, "what did i ask")
+                || fuzzyContains(message, "last query")
+                || fuzzyContains(message, "history");
+    }
+
+    private List<String> detectCategories(String message) {
         // Expanded keywords per category
         Map<String, List<String>> categoryKeywords = Map.of(
                 "christmas", List.of("christmas", "xmas", "festive", "holiday"),
@@ -410,24 +467,25 @@ public class AiController {
                 "cooking", List.of("cook", "food", "chef", "baking", "culinary", "gourmet")
         );
 
+        Set<String> categories = new HashSet<>();
         for (Map.Entry<String, List<String>> entry : categoryKeywords.entrySet()) {
             for (String keyword : entry.getValue()) {
                 if (fuzzyContains(message, keyword)) {
-                    return entry.getKey();
+                    categories.add(entry.getKey().toLowerCase());
                 }
             }
         }
-        return null;
+        return new ArrayList<>(categories);
     }
 
     private Predicate<EventDto> detectTimeFilter(String message, LocalDateTime now) {
-        if (message.contains("today")) {
+        if (fuzzyContains(message, "today")) {
             return e -> e.getDate().toLocalDate().equals(now.toLocalDate());
-        } else if (message.contains("this week")) {
+        } else if (fuzzyContains(message, "this week")) {
             LocalDateTime startOfWeek = now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
             LocalDateTime endOfWeek = startOfWeek.plusDays(6).withHour(23).withMinute(59);
             return e -> !e.getDate().isBefore(startOfWeek) && !e.getDate().isAfter(endOfWeek);
-        } else if (message.contains("this month")) {
+        } else if (fuzzyContains(message, "this month")) {
             LocalDateTime startOfMonth = now.withDayOfMonth(1);
             LocalDateTime endOfMonth = now.with(TemporalAdjusters.lastDayOfMonth()).withHour(23).withMinute(59);
             return e -> !e.getDate().isBefore(startOfMonth) && !e.getDate().isAfter(endOfMonth);
@@ -435,24 +493,25 @@ public class AiController {
         return e -> true; // No filter
     }
 
-    private EventDto detectSpecificEvent(String message, List<EventDto> lastEvents) {
-        // Simple detection: look for number like "1" or "about 2"
+    private List<EventDto> detectSpecificEvents(String message, List<EventDto> lastEvents) {
+        List<EventDto> specifics = new ArrayList<>();
+        // Detect numbers
         for (int i = 0; i < lastEvents.size(); i++) {
             int num = i + 1;
             if (message.contains(String.valueOf(num))) {
-                return lastEvents.get(i);
+                specifics.add(lastEvents.get(i));
             }
         }
-        // Or title match (now with fuzzy partial match)
+        // Or title matches (fuzzy partial)
         for (EventDto e : lastEvents) {
             String[] titleWords = e.getTitle().toLowerCase().split("\\s+");
             for (String word : titleWords) {
-                if (fuzzyContains(message, word)) {
-                    return e;
+                if (fuzzyContains(message, word) && !specifics.contains(e)) {
+                    specifics.add(e);
                 }
             }
         }
-        return null;
+        return specifics;
     }
 
     // New: Fuzzy matching utility using Levenshtein distance
@@ -492,6 +551,23 @@ public class AiController {
 
     private int min(int... numbers) {
         return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
+    }
+
+    // Helper to extract website from description
+    private String extractWebsite(String description) {
+        // Simple regex or string find; assume format 🌐 Website: www.example.com
+        int start = description.indexOf("🌐 Website: ") + 12;
+        int end = description.indexOf("\n", start);
+        return description.substring(start, end);
+    }
+
+    // Helper to extract contact from description
+    private String extractContact(String description) {
+        // Simple regex or string find; assume format 📞 Contact: 011 234 5678
+        int start = description.indexOf("📞 Contact: ") + 12;
+        int end = description.indexOf("\n", start);
+        if (end == -1) end = description.length();
+        return description.substring(start, end);
     }
 
     private EventDto createEvent(
