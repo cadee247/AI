@@ -23,13 +23,16 @@ public class SecurityConfig {
     }
 
     @Bean
+
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors() // ✅ THIS LINE FIXES YOUR ISSUE
+                .and()
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/ai/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/ai/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
@@ -41,4 +44,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }

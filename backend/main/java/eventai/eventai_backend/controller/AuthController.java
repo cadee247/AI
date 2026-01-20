@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController // Marks this class as a REST controller
 @RequestMapping("/api/auth") // Base URL for auth endpoints
-@CrossOrigin(
-        origins = {"http://localhost:3000", "http://localhost:3001"}, // Allow both frontend ports
-        allowCredentials = "true"
-)
+
 public class AuthController {
 
     @Autowired
