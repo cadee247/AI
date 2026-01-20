@@ -9,7 +9,7 @@ export default function Login() {
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
-    // Optional: auto-redirect if user is already logged in
+    // Auto-redirect if user is already logged in
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -23,23 +23,23 @@ export default function Login() {
 
         try {
             const res = await axios.post(
-                "http://localhost:8080/api/auth/login",
+                "https://ai-lthf.onrender.com/api/auth/login", // Updated backend URL
                 { username, password },
-                { withCredentials: true } // ✅ send cookies
+                { withCredentials: true } // send cookies
             );
 
-            // If backend returns token, save it; otherwise rely on cookie
+            // Save token if returned
             if (res.data?.token) {
                 localStorage.setItem("token", res.data.token);
             }
 
-            // Optional: store username for welcome messages
+            // Save username for welcome messages
             localStorage.setItem("username", username);
 
             setMessage("✅ Login successful! Redirecting...");
 
             setTimeout(() => {
-                navigate("/chatbot"); // go straight to chatbot
+                navigate("/chatbot"); // Redirect to chatbot
             }, 800);
         } catch (err) {
             console.error(err);
