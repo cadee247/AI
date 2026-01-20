@@ -8,7 +8,7 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
-    const navigate = useNavigate(); // ✅ FIXED
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,15 +16,17 @@ export default function Register() {
 
         try {
             const res = await axios.post(
-                "http://localhost:8080/api/auth/register",
+                "https://ai-lthf.onrender.com/api/auth/register", // updated URL
                 { username, password },
-                { withCredentials: true }
+                { withCredentials: true } // send cookies if backend uses them
             );
 
             if (res.status === 200) {
                 setMessage(`✅ Registration successful! Welcome, ${res.data.username}`);
                 setUsername("");
                 setPassword("");
+                // Optional: redirect straight to login or chatbot
+                setTimeout(() => navigate("/login"), 1000);
             }
         } catch (err) {
             console.error("Register error:", err);

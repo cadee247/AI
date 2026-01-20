@@ -47,8 +47,9 @@ export default function Chatbot() {
         setTimeout(async () => {
             try {
                 const token = localStorage.getItem("token");
+                const backendUrl = process.env.REACT_APP_API_URL; // ✅ Use Render backend
                 const res = await axios.post(
-                    "http://localhost:8080/api/ai/respond",
+                    `${backendUrl}/api/ai/respond`,
                     { message: trimmedInput },
                     { headers: { Authorization: `Bearer ${token}` } } // send JWT
                 );

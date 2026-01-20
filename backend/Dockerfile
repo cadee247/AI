@@ -5,16 +5,19 @@ WORKDIR /app
 # Copy Maven descriptor
 COPY pom.xml .
 
-# Copy your source folders (you have main/ and test/, not src/)
+# Copy the actual folders from your backend structure
 COPY main ./main
 COPY test ./test
 
-# Build the app inside the container
+# Build the app
 RUN mvn clean package -DskipTests
 
 # Stage 2: Run the app
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
+
+# Copy the built JAR from stage 1
 COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
