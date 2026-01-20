@@ -22,7 +22,7 @@ public class AiController {
     public AiController() {
         demoEvents = new ArrayList<>();
 
-demoEvents = new ArrayList<>();
+
 
 demoEvents.add(createEvent(1L, "Tech Meetup",
         "Join fellow developers for an evening of networking and tech talks.\n\n" +
