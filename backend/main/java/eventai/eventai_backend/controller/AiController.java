@@ -22,45 +22,104 @@ public class AiController {
     public AiController() {
         demoEvents = new ArrayList<>();
 
-        demoEvents.add(createEvent(1L, "Tech Meetup",
-                "A meetup for developers in Johannesburg",
-                LocalDateTime.of(2026, 1, 20, 18, 30),
-                "tech"));
+demoEvents = new ArrayList<>();
 
-        demoEvents.add(createEvent(2L, "AI Workshop",
-                "Hands-on AI workshop for beginners",
-                LocalDateTime.of(2026, 2, 5, 10, 0),
-                "tech"));
+demoEvents.add(createEvent(1L, "Tech Meetup",
+        "Join fellow developers for an evening of networking and tech talks.\n\n" +
+        "📍 Location: Newtown Junction, Johannesburg\n" +
+        "🕒 Time: 18:30 – 21:30\n" +
+        "👔 Dress Code: Smart casual\n" +
+        "💰 Price: Free entry\n" +
+        "🍕 Food & Drinks: Light snacks and refreshments provided\n" +
+        "🌐 Website: www.jhbtechmeetup.co.za\n" +
+        "📞 Contact: 011 234 5678",
+        LocalDateTime.of(2026, 1, 20, 18, 30),
+        "tech"));
 
-        demoEvents.add(createEvent(3L, "Music Festival",
-                "Annual music festival with local DJs",
-                LocalDateTime.of(2026, 1, 25, 15, 0),
-                "music"));
+demoEvents.add(createEvent(2L, "AI Workshop",
+        "A hands-on beginner-friendly AI workshop covering fundamentals and real-world use cases.\n\n" +
+        "📍 Location: WeWork, Rosebank\n" +
+        "🕒 Time: 10:00 – 16:00\n" +
+        "👔 Dress Code: Casual\n" +
+        "💰 Price: R350 per person\n" +
+        "🍔 Food & Drinks: Lunch and coffee included\n" +
+        "🌐 Website: www.aiworkshopsa.co.za\n" +
+        "📞 Contact: 010 987 6543",
+        LocalDateTime.of(2026, 2, 5, 10, 0),
+        "tech"));
 
-        demoEvents.add(createEvent(4L, "Live Concert",
-                "Rock band live concert",
-                LocalDateTime.of(2026, 2, 12, 19, 0),
-                "music"));
+demoEvents.add(createEvent(3L, "Music Festival",
+        "An energetic outdoor music festival featuring top local DJs and live performances.\n\n" +
+        "📍 Location: Mary Fitzgerald Square, Newtown\n" +
+        "🕒 Time: 15:00 – Late\n" +
+        "👕 Dress Code: Festival wear\n" +
+        "💰 Price: R250\n" +
+        "🍻 Food & Drinks: Food trucks and bars available\n" +
+        "🌐 Website: www.jhbmusicfest.co.za\n" +
+        "📞 Contact: 011 555 1122",
+        LocalDateTime.of(2026, 1, 25, 15, 0),
+        "music"));
 
-        demoEvents.add(createEvent(5L, "Cooking Masterclass",
-                "Learn to cook gourmet meals",
-                LocalDateTime.of(2026, 1, 30, 11, 0),
-                "cooking"));
+demoEvents.add(createEvent(4L, "Live Concert",
+        "Experience a high-energy rock concert with one of South Africa’s top bands.\n\n" +
+        "📍 Location: Melrose Arch Piazza\n" +
+        "🕒 Time: 19:00 – 22:00\n" +
+        "👔 Dress Code: Casual / Band merch encouraged\n" +
+        "💰 Price: R400\n" +
+        "🍔 Food & Drinks: Restaurants and bars on-site\n" +
+        "🌐 Website: www.livemusicjhb.co.za\n" +
+        "📞 Contact: 010 333 8899",
+        LocalDateTime.of(2026, 2, 12, 19, 0),
+        "music"));
 
-        demoEvents.add(createEvent(6L, "Baking Workshop",
-                "Hands-on baking class for beginners",
-                LocalDateTime.of(2026, 2, 12, 10, 0),
-                "cooking"));
+demoEvents.add(createEvent(5L, "Cooking Masterclass",
+        "Learn how to prepare gourmet meals with a professional chef in an interactive class.\n\n" +
+        "📍 Location: Randburg Culinary Studio\n" +
+        "🕒 Time: 11:00 – 14:00\n" +
+        "👔 Dress Code: Casual (aprons provided)\n" +
+        "💰 Price: R500\n" +
+        "🍽 Food & Drinks: Full meal included\n" +
+        "🌐 Website: www.cooklikeapro.co.za\n" +
+        "📞 Contact: 011 777 9090",
+        LocalDateTime.of(2026, 1, 30, 11, 0),
+        "cooking"));
 
-        demoEvents.add(createEvent(7L, "Christmas Market",
-                "Festive market with gifts and food",
-                LocalDateTime.of(2026, 12, 15, 12, 0),
-                "christmas"));
+demoEvents.add(createEvent(6L, "Baking Workshop",
+        "A beginner-friendly baking workshop covering cakes, pastries, and bread.\n\n" +
+        "📍 Location: Linden Community Hall\n" +
+        "🕒 Time: 10:00 – 13:00\n" +
+        "👕 Dress Code: Comfortable clothing\n" +
+        "💰 Price: R300\n" +
+        "🧁 Food & Drinks: Ingredients provided\n" +
+        "🌐 Website: www.bakejoy.co.za\n" +
+        "📞 Contact: 012 444 2211",
+        LocalDateTime.of(2026, 2, 12, 10, 0),
+        "cooking"));
 
-        demoEvents.add(createEvent(8L, "Xmas Carol Night",
-                "Community carol singing",
-                LocalDateTime.of(2026, 12, 20, 18, 0),
-                "christmas"));
+demoEvents.add(createEvent(7L, "Christmas Market",
+        "A festive outdoor market with handcrafted gifts, food stalls, and live entertainment.\n\n" +
+        "📍 Location: Emmarentia Gardens\n" +
+        "🕒 Time: 12:00 – 20:00\n" +
+        "🎄 Dress Code: Festive casual\n" +
+        "💰 Price: Free entry\n" +
+        "🍔 Food & Drinks: Multiple vendors available\n" +
+        "🌐 Website: www.jhbchristmasmarket.co.za\n" +
+        "📞 Contact: 011 888 1212",
+        LocalDateTime.of(2026, 12, 15, 12, 0),
+        "christmas"));
+
+demoEvents.add(createEvent(8L, "Xmas Carol Night",
+        "An evening of community carol singing with live choir performances.\n\n" +
+        "📍 Location: Randburg Civic Centre\n" +
+        "🕒 Time: 18:00 – 20:00\n" +
+        "🎄 Dress Code: Festive / Warm clothing\n" +
+        "💰 Price: Free\n" +
+        "☕ Food & Drinks: Hot chocolate and snacks available\n" +
+        "🌐 Website: www.carolsjhb.co.za\n" +
+        "📞 Contact: 010 222 3344",
+        LocalDateTime.of(2026, 12, 20, 18, 0),
+        "christmas"));
+
     }
 
     @PostMapping("/respond")
