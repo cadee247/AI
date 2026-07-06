@@ -32,7 +32,7 @@ public class AiController {
                 "🌐 Website: www.jhbtechmeetup.co.za\n" +
                 "📞 Contact: 011 234 5678\n" +
                 "Highlights: Guest speakers from leading tech companies, interactive Q&A sessions, and opportunities for collaboration on open-source projects.",
-                LocalDateTime.of(2026, 1, 20, 18, 30),
+                LocalDateTime.of(2026, 8, 20, 18, 30),
                 "tech"));
         demoEvents.add(createEvent(2L, "AI Workshop",
                 "A hands-on beginner-friendly AI workshop covering fundamentals and real-world use cases. Learn about machine learning algorithms, build your first AI model, and explore ethical AI practices.\n\n" +
@@ -44,7 +44,7 @@ public class AiController {
                 "🌐 Website: www.aiworkshopsa.co.za\n" +
                 "📞 Contact: 010 987 6543\n" +
                 "Highlights: Practical coding exercises with Python and TensorFlow, group discussions on AI applications in healthcare and finance, and certificates for participants.",
-                LocalDateTime.of(2026, 2, 5, 10, 0),
+                LocalDateTime.of(2026, 7, 5, 10, 0),
                 "tech"));
         demoEvents.add(createEvent(9L, "Blockchain Summit",
                 "Explore the future of blockchain technology with experts from around the world. Discussions on cryptocurrencies, smart contracts, and decentralized finance.\n\n" +
@@ -56,7 +56,7 @@ public class AiController {
                 "🌐 Website: www.blockchainsummitjhb.co.za\n" +
                 "📞 Contact: 011 456 7890\n" +
                 "Highlights: Keynote speeches by blockchain pioneers, hands-on demos of NFT creation, and networking with startups in the Web3 space.",
-                LocalDateTime.of(2026, 3, 15, 9, 0),
+                LocalDateTime.of(2026, 9, 15, 9, 0),
                 "tech"));
         demoEvents.add(createEvent(10L, "Cybersecurity Conference",
                 "Stay ahead of cyber threats with insights from top security professionals. Topics include data privacy, ethical hacking, and emerging risks in IoT.\n\n" +
@@ -68,7 +68,7 @@ public class AiController {
                 "🌐 Website: www.cybersecjhb.co.za\n" +
                 "📞 Contact: 012 345 6789\n" +
                 "Highlights: Live hacking demonstrations, panel debates on AI in cybersecurity, and workshops on building secure networks.",
-                LocalDateTime.of(2026, 4, 22, 8, 30),
+                LocalDateTime.of(2026, 7, 22, 8, 30),
                 "tech"));
         demoEvents.add(createEvent(11L, "Startup Pitch Night",
                 "Watch innovative startups pitch their ideas to investors and get feedback. A great opportunity for entrepreneurs and tech enthusiasts alike.\n\n" +
@@ -80,7 +80,7 @@ public class AiController {
                 "🌐 Website: www.startuppitchjhb.co.za\n" +
                 "📞 Contact: 011 789 0123\n" +
                 "Highlights: Live pitches from 10 startups, investor Q&A, and post-event networking with mentors and venture capitalists.",
-                LocalDateTime.of(2026, 5, 10, 17, 0),
+                LocalDateTime.of(2026, 10, 10, 17, 0),
                 "tech"));
 
         // Music events
@@ -94,7 +94,7 @@ public class AiController {
                 "🌐 Website: www.jhbmusicfest.co.za\n" +
                 "📞 Contact: 011 555 1122\n" +
                 "Highlights: Multiple stages with international headliners, art installations, and dance zones for all ages.",
-                LocalDateTime.of(2026, 1, 25, 15, 0),
+                LocalDateTime.of(2026, 11, 25, 15, 0),
                 "music"));
         demoEvents.add(createEvent(4L, "Live Concert",
                 "Experience a high-energy rock concert with one of South Africa’s top bands. Feel the thrill of live music with powerful vocals and guitar solos.\n\n" +
@@ -106,7 +106,7 @@ public class AiController {
                 "🌐 Website: www.livemusicjhb.co.za\n" +
                 "📞 Contact: 010 333 8899\n" +
                 "Highlights: Special guest appearances, pyrotechnics show, and an acoustic set for fans.",
-                LocalDateTime.of(2026, 2, 12, 19, 0),
+                LocalDateTime.of(2026, 12, 12, 19, 0),
                 "music"));
         demoEvents.add(createEvent(12L, "Jazz Night",
                 "Immerse yourself in smooth jazz rhythms with talented local musicians. A relaxing evening of improvisation and classic tunes.\n\n" +
@@ -118,7 +118,7 @@ public class AiController {
                 "🌐 Website: www.orbitjazz.co.za\n" +
                 "📞 Contact: 011 123 4567\n" +
                 "Highlights: Jam sessions with audience participation, featured soloists, and a cozy intimate venue atmosphere.",
-                LocalDateTime.of(2026, 3, 8, 20, 0),
+                LocalDateTime.of(2026, 7, 8, 20, 0),
                 "music"));
         demoEvents.add(createEvent(13L, "Hip-Hop Battle",
                 "Witness fierce rap battles and freestyle sessions from up-and-coming artists. A night of raw energy and lyrical talent.\n\n" +
@@ -130,7 +130,7 @@ public class AiController {
                 "🌐 Website: www.hiphopbattlejhb.co.za\n" +
                 "📞 Contact: 010 456 7890\n" +
                 "Highlights: Live beatboxing, graffiti art displays, and prizes for crowd favorites.",
-                LocalDateTime.of(2026, 4, 18, 18, 0),
+                LocalDateTime.of(2026, 9, 18, 18, 0),
                 "music"));
         demoEvents.add(createEvent(14L, "Classical Symphony",
                 "Enjoy a captivating performance by the Johannesburg Philharmonic Orchestra, featuring timeless pieces from Beethoven and Mozart.\n\n" +
@@ -142,7 +142,7 @@ public class AiController {
                 "🌐 Website: www.jhbsymphony.co.za\n" +
                 "📞 Contact: 011 890 1234\n" +
                 "Highlights: Guest conductor from Europe, thematic program notes, and post-concert meet-and-greet with musicians.",
-                LocalDateTime.of(2026, 5, 25, 19, 30),
+                LocalDateTime.of(2026, 8, 25, 19, 30),
                 "music"));
 
         // Cooking events
@@ -156,7 +156,7 @@ public class AiController {
                 "🌐 Website: www.cooklikeapro.co.za\n" +
                 "📞 Contact: 011 777 9090\n" +
                 "Highlights: Step-by-step guidance on techniques like sous-vide and plating, wine pairing tips, and take-home recipes.",
-                LocalDateTime.of(2026, 1, 30, 11, 0),
+                LocalDateTime.of(2026, 11, 30, 11, 0),
                 "cooking"));
         demoEvents.add(createEvent(6L, "Baking Workshop",
                 "A beginner-friendly baking workshop covering cakes, pastries, and bread. Discover the secrets to perfect dough and decadent frostings.\n\n" +
@@ -168,7 +168,7 @@ public class AiController {
                 "🌐 Website: www.bakejoy.co.za\n" +
                 "📞 Contact: 012 444 2211\n" +
                 "Highlights: Hands-on mixing and decorating, tips for gluten-free alternatives, and packaging to take treats home.",
-                LocalDateTime.of(2026, 2, 12, 10, 0),
+                LocalDateTime.of(2026, 12, 12, 10, 0),
                 "cooking"));
         demoEvents.add(createEvent(15L, "Street Food Tour",
                 "Embark on a guided tour of Johannesburg's best street food spots, tasting diverse flavors from African to Asian fusion.\n\n" +
@@ -180,7 +180,7 @@ public class AiController {
                 "🌐 Website: www.streetfoodtourjhb.co.za\n" +
                 "📞 Contact: 011 567 8901\n" +
                 "Highlights: Stories behind each dish, interactions with local chefs, and dietary accommodations for vegans and allergies.",
-                LocalDateTime.of(2026, 3, 20, 12, 0),
+                LocalDateTime.of(2026, 7, 20, 12, 0),
                 "cooking"));
         demoEvents.add(createEvent(16L, "Wine and Cheese Pairing",
                 "Discover the art of pairing South African wines with artisanal cheeses in a relaxed setting.\n\n" +
@@ -192,7 +192,7 @@ public class AiController {
                 "🌐 Website: www.winecheesejhb.co.za\n" +
                 "📞 Contact: 010 123 4567\n" +
                 "Highlights: Expert sommelier guidance, regional wine education, and tips for hosting your own pairings.",
-                LocalDateTime.of(2026, 4, 5, 16, 0),
+                LocalDateTime.of(2026, 8, 5, 16, 0),
                 "cooking"));
         demoEvents.add(createEvent(17L, "Vegan Cooking Class",
                 "Master plant-based cooking with creative recipes that are healthy and delicious, using seasonal produce.\n\n" +
@@ -204,7 +204,7 @@ public class AiController {
                 "🌐 Website: www.vegancookjhb.co.za\n" +
                 "📞 Contact: 011 234 5678\n" +
                 "Highlights: Focus on nutrition, alternative ingredient swaps, and sustainable cooking practices.",
-                LocalDateTime.of(2026, 5, 15, 9, 0),
+                LocalDateTime.of(2026, 9, 15, 9, 0),
                 "cooking"));
 
         // Christmas events
