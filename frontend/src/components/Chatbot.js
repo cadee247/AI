@@ -8,16 +8,16 @@ export default function Chatbot() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
     const [isTyping, setIsTyping] = useState(false);
-    const [username, setUsername] = useState(""); // for personalized greeting
+    const [username, setUsername] = useState(""); 
     const messagesEndRef = useRef(null);
 
-    // ✅ Check for JWT and set username
+    // Check for JWT and set personalized greeting
     useEffect(() => {
         const token = localStorage.getItem("token");
         const storedUsername = localStorage.getItem("username");
 
         if (!token || !storedUsername) {
-            navigate("/login"); // redirect to login if not logged in
+            navigate("/login"); 
         } else {
             setUsername(storedUsername);
             setMessages([
@@ -39,51 +39,51 @@ export default function Chatbot() {
         const trimmedInput = input.trim();
         if (!trimmedInput) return;
 
-        // Add user's message
+        // Render user message instantly
         setMessages(prev => [...prev, { sender: "user", text: trimmedInput }]);
         setInput("");
         setIsTyping(true);
 
-        setTimeout(async () => {
-            try {
-                const token = localStorage.getItem("token");
-                const backendUrl = process.env.REACT_APP_API_URL; // ✅ Use Render backend
-                const res = await axios.post(
-                    `${backendUrl}/api/ai/respond`,
-                    { message: trimmedInput },
-                    { headers: { Authorization: `Bearer ${token}` } } // send JWT
-                );
+        try {
+            const token = localStorage.getItem("token");
+            const backendUrl = process.env.REACT_APP_API_URL; 
+            
+            // Fired instantly with no artificial timeout delays
+            const res = await axios.post(
+                `${backendUrl}/api/ai/respond`,
+                { message: trimmedInput, sessionId: username || "default" },
+                { headers: { Authorization: `Bearer ${token}` } } 
+            );
 
-                const data = res.data;
-                const aiMessages = [];
+            const data = res.data;
+            const aiMessages = [];
 
-                // EVENTS RESPONSE
-                if (data.type === "events" && Array.isArray(data.messages)) {
-                    data.messages.forEach(msg => {
-                        aiMessages.push({ sender: msg.sender, text: msg.text });
-                    });
-                }
-
-                // GREETING / ERROR RESPONSE
-                else if (data.reply) {
-                    data.reply
-                        .split("\n")
-                        .filter(Boolean)
-                        .forEach(line =>
-                            aiMessages.push({ sender: "ai", text: line })
-                        );
-                }
-
-                setMessages(prev => [...prev, ...aiMessages]);
-            } catch (err) {
-                setMessages(prev => [
-                    ...prev,
-                    { sender: "ai", text: "⚠️ Something went wrong. Try again in a bit." }
-                ]);
-            } finally {
-                setIsTyping(false);
+            // 1. Process Structured Arrays (Events Listings or Multi-Line Feedback)
+            if (Array.isArray(data.messages) && data.messages.length > 0) {
+                data.messages.forEach(msg => {
+                    aiMessages.push({ sender: msg.sender, text: msg.text });
+                });
             }
-        }, 500);
+            // 2. Process Fallback Static Text Responses
+            else if (data.reply) {
+                data.reply
+                    .split("\n")
+                    .filter(Boolean)
+                    .forEach(line =>
+                        aiMessages.push({ sender: "ai", text: line.trim() })
+                    );
+            }
+
+            setMessages(prev => [...prev, ...aiMessages]);
+        } catch (err) {
+            console.error("Chatbot transmission breakdown:", err);
+            setMessages(prev => [
+                ...prev,
+                { sender: "ai", text: "⚠️ Something went wrong. Try again in a bit." }
+            ]);
+        } finally {
+            setIsTyping(false);
+        }
     };
 
     return (
